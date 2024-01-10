@@ -15,4 +15,9 @@ use App\Http\Controllers\TasksController;
 |
 */
 
-Route::get('/', [ProjectsController::class, 'index'])->name('home');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::resource('projects', ProjectsController::class);
+Route::resource('tasks', TasksController::class);

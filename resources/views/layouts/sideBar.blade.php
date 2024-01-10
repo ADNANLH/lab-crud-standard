@@ -13,7 +13,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="../../gestion_des_projet/project/index.php" class="nav-link">
+                    <a href="{{ route('projects.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Projets
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../../gestion_des_projet/tache/index.php" class="nav-link ">
+                    <a href="{{ route('tasks.index')}}" class="nav-link ">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Tâches
