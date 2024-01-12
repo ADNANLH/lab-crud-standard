@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TasksController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +15,10 @@ use App\Http\Controllers\TasksController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::resource('projects', ProjectsController::class);
+Route::get('/' ,[ProjectsController::class, 'index'])->name('projects.index');
+
+
 Route::resource('tasks', TasksController::class);
+// Route::get(TaskController::class,'index')->name('tasks.index');

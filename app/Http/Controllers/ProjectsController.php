@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Repositories\ProjectsRepository;
+use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
@@ -13,6 +13,6 @@ class ProjectsController extends Controller
     }
     public function index(){
         $Projects = $this->projectRepository->index();
-        return view('Projects.index' , compact('Projects'));
+        return view('Projects.index', compact('Projects'));
     }
 }
