@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [ProjectsController::class, "index"])->name("projects.index");
+Route::resource("projects", ProjectsController::class);
 
-Route::resource('projects', ProjectsController::class);
-Route::get('/' ,[ProjectsController::class, 'index'])->name('projects.index');
+Route::resource('taches', TasksController::class);
+// Route::get('projet/{projectId}/taches', [TasksController::class, "index"])->name("projects.tasks");
 
-
-Route::resource('tasks', TasksController::class);
-// Route::get(TaskController::class,'index')->name('tasks.index');
+Route::get('projects/tasks/{projectId}', [TasksController::class,'index'])->name('projects.tasks');

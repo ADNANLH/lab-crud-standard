@@ -1,45 +1,46 @@
-<form action="process_form.php" method="POST">
-    <div class="card-body">
-        <div class="form-group">
-            <label for="inputNom">Titre</label>
-            <input name="projectName" type="text" class="form-control" id="inputNom" placeholder="Entrez le titre" value="CNMH">
+    <form method="POST" class="container pt-2" action="{{ isset($task) ? route('taches.update', ['tach' => $task->id]) : route('taches.store') }}">
+        @csrf
+        @if (isset($task))
+            @method('PUT')
+        @endif
+
+        <div class="card-body">
+            <div class="form-group">
+                <label for="nom" class="form-label">Projet</label>
+                <select name="projetId" id="projetId" class="form-control">
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}" {{ request('projectId') == $project->id ? 'selected' : '' }}>
+                            {{ $project->nom }}
+                        </option>
+                    @endforeach
+                </select>
+                
+                @error('projetId')
+                    <div class="invalid-feedback text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            
+            <div class="form-group mb-3">
+                <label for="nom">Nom</label>
+                <input name="nom" type="text" class="form-control @error('nom') is-invalid @enderror" id="nom" placeholder="Entre le nom de la tâche"
+                    value="{{ old('nom', isset($task) ? $task->nom : '') }}">
+                @error('nom')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+            
+
+            <div class="form-group mb-3">
+                <label for="Description">Description</label>
+                <textarea name="description" id="inputDescription" class="form-control" oninput="setCustomValidity('')">{{ old('description', isset($task) ? $task->description : '') }}</textarea>
+                @error('description')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
         </div>
-
-        <div class="form-group">
-            <label for="inputStartDate">Date de début</label>
-            <input name="startDate" type="date" class="form-control" id="inputStartDate" placeholder="Sélectionnez la date de début" value="2023-01-01">
+        <div class="card-footer">
+            <a href="{{ route('taches.index') }}" class="btn btn-default">Cancel</a>
+            <button type="submit" class="btn btn-primary mx-2">{{ isset($task) ? 'Modifier' : 'Ajouter' }}</button>
         </div>
-
-        <div class="form-group">
-            <label for="inputEndDate">Date de fin</label>
-            <input name="endDate" type="date" class="form-control" id="inputEndDate" placeholder="Sélectionnez la date de fin" value="2024-02-01">
-        </div>
-
-        <div class="form-group">
-            <label for="inputDescription">Description</label>
-            <textarea name="projectDescription" class="form-control" id="inputDescription" placeholder="Entrez la description">Description de CNMH</textarea>
-        </div>
-
-    </div>
-
-    <div class="card-footer">
-        <a href="./index.php" class="btn btn-default">Annuler</a>
-        <button type="submit" class="btn btn-info">Ajouter</button>
-    </div>
-</form>
-
-<script>
-    tinymce.init({
-        selector: '#inputDescription',
-        height: 300, // Set the height of the editor
-        menubar: false, // Hide the menu bar
-        plugins: [
-            'advlist autolink lists link image charmap print preview anchor',
-            'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table paste code help wordcount'
-        ],
-        toolbar: 'undo redo | formatselect | bold italic backcolor | \
-                   alignleft aligncenter alignright alignjustify | \
-                   bullist numlist outdent indent | removeformat | help'
-    });
-</script>
+    </form>

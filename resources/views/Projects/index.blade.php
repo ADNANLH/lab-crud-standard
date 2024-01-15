@@ -1,22 +1,12 @@
-@extends('layouts.layout')
-@include('layouts.nav')
+@extends('layouts.master')
 
 @section('content')
-<div style="min-height: 1302.4px;">
-    <div class="" style="min-height: 1302.4px;">
+    <div class="content-wrapper" style="min-height: 1302.4px;">
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Liste des projets</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="float-sm-right">
-                            <a href="./create.php" class="btn btn-info">
-                                <i class="fas fa-plus"></i> Nouveau projet
-                            </a>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -29,7 +19,8 @@
                             <div class="card-header col-md-12">
                                 <div class=" p-0">
                                     <div class="input-group input-group-sm float-sm-right col-md-3 p-0">
-                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Recherche">
+                                        <input type="text" name="search-input" id="search-input" class="form-control float-right"
+                                            placeholder="Recherche">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-default">
                                                 <i class="fas fa-search"></i>
@@ -40,26 +31,45 @@
                             </div>
 
                             <div class="card-body table-responsive p-0">
-                                <table class="table table-striped text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Titre</th>
-                                            <th>Description</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @include('Projects.projectSearch')
-                                    </tbody>
-                                </table>
+                                @include('projects.table')
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-        </div>
 
-    
+<!-- Uncomment the jQuery script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        function fetchData(page, searchValue) {
+            $.ajax({
+                url: 'projects/?page=' + page + '&searchValue=' + searchValue,
+                success: function(data) {
+                    $('tbody').html('');
+                    $('tbody').html(data);
+                }
+            });
+        }
+
+        $('body').on('click', '.pagination a', function(event) {
+            event.preventDefault();
+
+            var page = $(this).attr('href').split('page=')[1];
+            var searchValue = $('#search-input').val();
+
+            fetchData(page, searchValue);
+        });
+
+        $('body').on('keyup', '#search-input', function() {
+            var page = 1;
+            var searchValue = $('#search-input').val();
+            fetchData(page, searchValue);
+        });
+    });
+</script>
+
 @endsection

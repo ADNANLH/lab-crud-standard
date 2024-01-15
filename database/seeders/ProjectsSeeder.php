@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ProjectSeeder extends Seeder
+class ProjectsSeeder extends Seeder
 {
-
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
@@ -24,10 +23,9 @@ class ProjectSeeder extends Seeder
                 'description' => 'Création d\'une application web pour l\'évaluation des compétences.',
             ],
             [
-                'nom' => '  CNMH',
-                'description' => 'Création d\'une application web pour laa gestion des patients de centre cnmh.',
+                'nom' => 'CNMH',
+                'description' => 'Création d\'une application web pour la gestion des patients du centre CNMH.',
             ]
         ]);
-        
     }
 }
