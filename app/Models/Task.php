@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
-class Tasks extends Model
+class Task extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -14,8 +13,8 @@ class Tasks extends Model
         'description',
         'projetId',
     ];
-    public function projects()
+    public function project()
     {
-        return $this->belongsTo(Projects::class);
+        return $this->belongsTo(Project::class);
     }
 }

@@ -16,7 +16,7 @@
 <body class="sidebar-mini" style="height: auto;">
 
     @include('layouts.nav')
-    @include('layouts.aside')
+    @include('layouts.SideBar')
 
     <div class="wrapper">
         @yield('content')

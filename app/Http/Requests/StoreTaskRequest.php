@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTaskRequest extends FormRequest
@@ -23,9 +22,9 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required',
+            'nom' => 'required|max:40',
+            'projetId' => 'required',
             'description' => 'nullable',
-            'projetId'=> 'required',
         ];
     }
 }

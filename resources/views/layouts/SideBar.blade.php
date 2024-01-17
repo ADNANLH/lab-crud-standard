@@ -19,7 +19,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('taches.index')}}" class="nav-link  {{ request()->routeIs(['taches.index', 'taches.show' ]) ? 'active' : '' }}">
+              <a href="{{ route('tasks.index')}}" class="nav-link  {{ request()->routeIs(['tasks.index', 'tasks.show', 'projects.tasks' ]) ? 'active' : '' }}">
                   <i class="nav-icon fas fa-tasks"></i>
                   <p>
                       Tâches

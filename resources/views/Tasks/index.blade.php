@@ -1,5 +1,4 @@
-@extends('layouts.master')
-
+@extends('layouts.layout')
 @section('content')
     <div class="content-wrapper" style="min-height: 1302.4px;">
         <div class="content-header">
@@ -16,7 +15,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="float-sm-right">
-                            <a href="{{ route('taches.create', ['projectId' => $project->id]) }}" class="btn btn-info">
+                            <a href="{{ route('tasks.create', ['projectId' => $project->id]) }}" class="btn btn-info">
                                 <i class="fas fa-plus"></i> Nouveau Tâche
                             </a>
                         </div>
@@ -48,13 +47,14 @@
                                         <button type="button" class="btn btn-default dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fa-solid fa-filter text-dark pr-2 border-right"></i>
-                                            <input type="hidden" name="projectId" id="projectId" value="{{ $project->id }}">
+                                            <input type="hidden" name="projectId" id="projectId"
+                                                value="{{ $project->id }}">
                                             {{ $project->nom }}
                                         </button>
                                         <div class="dropdown-menu">
                                             @foreach ($projects as $project)
                                                 <a class="dropdown-item"
-                                                    href="{{ route('projects.tasks', ['projectId' => $project->id]) }}">{{ $project->nom }}</a>
+                                                    href="{{ route('projects.tasks', ['projetId' => $project->id]) }}">{{ $project->nom }}</a>
                                             @endforeach
                                         </div>
                                     </div>
@@ -75,43 +75,75 @@
                             </div>
 
                             <div class="card-body table-responsive p-0">
-                                <table class="table table-striped text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Titre</th>
-                                            <th>Description</th>
-                                            <th class="text-center">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @include('tasks.search')
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                        <td></td>
-                                        <td></td>
-                                            <td colspan="3" class="text-center">{{ $tasks->links() }}</td>
-                                        </tr>
-                                    </tfoot>
-                                </table>                            </div>
+                                @include('tasks.table')
+                            </div>
 
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-            {{-- get modal delete task --}}
-        <x-modal-delete-task />
+        {{-- get modal delete tasks --}}
+        <x-modal-delete-tasks />
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function fetchData(page, searchValue, projetId) {
+                // Choose either requestUrl or requestUr2
+                var requestUrl = "{{ url('projects') }}/tasks/" + projetId + "?page=" + page + "&searchValue=" +
+                    searchValue;
+
+                console.log("Request URL:", requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    success: function(data) {
+
+                        if (data == 'false') {
+                            // No results found, display a message
+                            $('tbody').html(
+                                '<tr> <td colspan = "3" class = "text-center" > Aucune tâche trouvée. < /td> </tr>'
+                                );
+                        } else {
+                            $('tbody').html('');
+                            $('tbody').html(data);
+                        }
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX Error:", textStatus, errorThrown);
+                    }
+                });
+            }
+
+            $('body').on('click', '.pagination a', function(event) {
+                event.preventDefault();
+
+                var page = $(this).attr('href').split('page=')[1];
+                var searchValue = $('#search-input').val();
+                var projectId = $('#projectId').val();
+
+                fetchData(page, searchValue, 1);
+            });
+
+            $('body').on('keyup', '#search-input', function() {
+
+                var page = 1;
+                var searchValue = $('#search-input').val();
+                var projectId = $('#projectId').val();
+
+                console.log(searchValue);
+                fetchData(page, searchValue, 1);
+            });
+        });
+    </script>
 
 
-    
     <script>
         function deleteTask(taskId) {
-            document.getElementById('Task_id').value = taskId;
-            document.getElementById('deleteForm').action = "{{ route('taches.destroy', ':taskId') }}".replace(':taskId',
+            document.getElementById('deleteForm').action = "{{ route('tasks.destroy', ':taskId') }}".replace(':taskId',
                 taskId);
         }
     </script>
